@@ -80,9 +80,19 @@ export default {
     PartSelector,
     CollapsibleSection,
   },
+  beforeRouteLeave ( to , from , next) {
+    if(this.addedToCart){
+      next(true);
+    }
+    else{
+      const response = confirm("You do not have added any robot into your cart. Are you sure to want to leave?");
+      next(response);
+    }
+  },
   data() {
     return {
       availableParts,
+      addedToCart: false,
       cart: [],
       selectedRobot: {
           head: {},
@@ -115,6 +125,7 @@ export default {
       robot.torso.cost+
       robot.base.cost;
       this.cart.push(Object.assign({}, robot , { cost }));
+      this.addedToCart = true;
     },
   },
 };
